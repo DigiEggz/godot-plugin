@@ -3,7 +3,8 @@ entry_symbol = "gdext_rust_init"
 compatibility_minimum = "4.2"
 
 [libraries]
-linux.x86_64 = "res://addons/nodetunnel/bin/linux/libnodetunnel.so"
+linux.x86_64 = "res://addons/nodetunnel/bin/linux/x86_64/libnodetunnel.so"
+linux.arm64 = "res://addons/nodetunnel/bin/linux/arm64/libnodetunnel.so"
 windows.x86_64 = "res://addons/nodetunnel/bin/windows/x86_64/nodetunnel.dll"
 windows.arm64 = "res://addons/nodetunnel/bin/windows/arm64/nodetunnel.dll"
 macos = "res://addons/nodetunnel/bin/macos/libnodetunnel.dylib"
