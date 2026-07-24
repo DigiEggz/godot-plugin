@@ -1,14 +1,13 @@
 [configuration]
 entry_symbol = "gdext_rust_init"
-compatibility_minimum = 4.1
-reloadable = false
+compatibility_minimum = "4.2"
 
 [libraries]
-linux.debug.x86_64 =     "bin/libnodetunnel.so"
-linux.release.x86_64 =   "bin/libnodetunnel.so"
-windows.debug.x86_64 =   "bin/nodetunnel.dll"
-windows.release.x86_64 = "bin/nodetunnel.dll"
-macos.debug =            "bin/libnodetunnel.dylib"
-macos.release =          "bin/libnodetunnel.dylib"
-macos.debug.arm64 =      "bin/libnodetunnel.dylib"
-macos.release.arm64 =    "bin/libnodetunnel.dylib"
+linux.x86_64 = "res://addons/nodetunnel/bin/linux/libnodetunnel.so"
+windows.x86_64 = "res://addons/nodetunnel/bin/windows/nodetunnel.dll"
+windows.x86_32 = "res://addons/nodetunnel/bin/windows/x86_32/nodetunnel.dll"
+windows.arm64 = "res://addons/nodetunnel/bin/windows/arm64/nodetunnel.dll"
+macos = "res://addons/nodetunnel/bin/macos/libnodetunnel.dylib"
+android.aarch64 = "res://addons/nodetunnel/bin/android/arm64-v8a/libnodetunnel.so"
+android.arm32 = "res://addons/nodetunnel/bin/android/armeabi-v7a/libnodetunnel.so"
+android.x86_64 = "res://addons/nodetunnel/bin/android/x86_64/libnodetunnel.so"
