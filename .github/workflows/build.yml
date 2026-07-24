@@ -35,13 +35,10 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: x86_64-pc-windows-msvc, i686-pc-windows-msvc, aarch64-pc-windows-msvc
+          targets: x86_64-pc-windows-msvc, aarch64-pc-windows-msvc
 
       - name: Build 64-bit Windows
         run: cargo build --manifest-path src/Cargo.toml --release --target x86_64-pc-windows-msvc
-
-      - name: Build 32-bit Windows
-        run: cargo build --manifest-path src/Cargo.toml --release --target i686-pc-windows-msvc
 
       - name: Build ARM64 Windows
         run: cargo build --manifest-path src/Cargo.toml --release --target aarch64-pc-windows-msvc
@@ -51,11 +48,9 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           
-          New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/x86_32"
           New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/arm64"
           New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/x86_64"
           
-          Copy-Item "src/target/i686-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/x86_32/" -Verbose
           Copy-Item "src/target/aarch64-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/arm64/" -Verbose
           Copy-Item "src/target/x86_64-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/x86_64/" -Verbose
 
