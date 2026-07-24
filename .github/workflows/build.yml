@@ -13,19 +13,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install ARM64 Cross Linker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: x86_64-unknown-linux-gnu
+          targets: x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu
 
-      - name: Build Linux Binary
+      - name: Build Linux x86_64 Binary
         run: cargo build --manifest-path src/Cargo.toml --release --target x86_64-unknown-linux-gnu
 
-      - name: Upload Linux Artifact
+      - name: Build Linux ARM64 Binary
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+        run: cargo build --manifest-path src/Cargo.toml --release --target aarch64-unknown-linux-gnu
+
+      - name: Organize Linux Binaries
+        run: |
+          mkdir -p addons/nodetunnel/bin/linux/x86_64
+          mkdir -p addons/nodetunnel/bin/linux/arm64
+          cp src/target/x86_64-unknown-linux-gnu/release/libnodetunnel.so addons/nodetunnel/bin/linux/x86_64/
+          cp src/target/aarch64-unknown-linux-gnu/release/libnodetunnel.so addons/nodetunnel/bin/linux/arm64/
+
+      - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nodetunnel-linux
-          path: src/target/x86_64-unknown-linux-gnu/release/libnodetunnel.so
+          path: addons/nodetunnel/bin/linux/
 
   build-windows:
     runs-on: windows-latest
