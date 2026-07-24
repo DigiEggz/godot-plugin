@@ -4,7 +4,7 @@ compatibility_minimum = "4.2"
 
 [libraries]
 linux.x86_64 = "res://addons/nodetunnel/bin/linux/libnodetunnel.so"
-windows.x86_64 = "res://addons/nodetunnel/bin/windows/nodetunnel.dll"
+windows.x86_64 = "res://addons/nodetunnel/bin/windows/x86_64/nodetunnel.dll"
 windows.x86_32 = "res://addons/nodetunnel/bin/windows/x86_32/nodetunnel.dll"
 windows.arm64 = "res://addons/nodetunnel/bin/windows/arm64/nodetunnel.dll"
 macos = "res://addons/nodetunnel/bin/macos/libnodetunnel.dylib"
