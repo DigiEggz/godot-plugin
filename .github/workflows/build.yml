@@ -19,13 +19,13 @@ jobs:
           targets: x86_64-unknown-linux-gnu
 
       - name: Build Linux Binary
-        run: cargo build --release --target x86_64-unknown-linux-gnu
+        run: cargo build --manifest-path src/Cargo.toml --release --target x86_64-unknown-linux-gnu
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nodetunnel-linux
-          path: target/x86_64-unknown-linux-gnu/release/libnodetunnel.so
+          path: src/target/x86_64-unknown-linux-gnu/release/libnodetunnel.so
 
   build-windows:
     runs-on: windows-latest
@@ -39,18 +39,18 @@ jobs:
 
       - name: Build Windows Binaries
         run: |
-          cargo build --release --target x86_64-pc-windows-msvc
-          cargo build --release --target i686-pc-windows-msvc
-          cargo build --release --target aarch64-pc-windows-msvc
+          cargo build --manifest-path src/Cargo.toml --release --target x86_64-pc-windows-msvc
+          cargo build --manifest-path src/Cargo.toml --release --target i686-pc-windows-msvc
+          cargo build --manifest-path src/Cargo.toml --release --target aarch64-pc-windows-msvc
 
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nodetunnel-windows
           path: |
-            target/x86_64-pc-windows-msvc/release/*.dll
-            target/i686-pc-windows-msvc/release/*.dll
-            target/aarch64-pc-windows-msvc/release/*.dll
+            src/target/x86_64-pc-windows-msvc/release/*.dll
+            src/target/i686-pc-windows-msvc/release/*.dll
+            src/target/aarch64-pc-windows-msvc/release/*.dll
 
   build-macos:
     runs-on: macos-latest
@@ -64,21 +64,21 @@ jobs:
 
       - name: Build macOS Binaries
         run: |
-          cargo build --release --target x86_64-apple-darwin
-          cargo build --release --target aarch64-apple-darwin
+          cargo build --manifest-path src/Cargo.toml --release --target x86_64-apple-darwin
+          cargo build --manifest-path src/Cargo.toml --release --target aarch64-apple-darwin
 
       - name: Create Universal Binary
         run: |
-          mkdir -p target/universal-apple-darwin/release
-          lipo -create -output target/universal-apple-darwin/release/libnodetunnel.dylib \
-            target/x86_64-apple-darwin/release/libnodetunnel.dylib \
-            target/aarch64-apple-darwin/release/libnodetunnel.dylib
+          mkdir -p src/target/universal-apple-darwin/release
+          lipo -create -output src/target/universal-apple-darwin/release/libnodetunnel.dylib \
+            src/target/x86_64-apple-darwin/release/libnodetunnel.dylib \
+            src/target/aarch64-apple-darwin/release/libnodetunnel.dylib
 
       - name: Upload macOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nodetunnel-macos
-          path: target/universal-apple-darwin/release/libnodetunnel.dylib
+          path: src/target/universal-apple-darwin/release/libnodetunnel.dylib
 
   build-android:
     runs-on: ubuntu-latest
@@ -92,6 +92,7 @@ jobs:
 
       - name: Set up Android NDK
         uses: nttld/setup-ndk@v1
+        id: setup-ndk
         with:
           ndk-version: r26b
 
@@ -99,8 +100,9 @@ jobs:
         run: cargo install cargo-ndk
 
       - name: Build Android Shared Libraries
+        working-directory: src
         run: |
-          cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android -o addons/nodetunnel/bin/android build --release
+          cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android -o ../addons/nodetunnel/bin/android build --release
 
       - name: Upload Android Artifacts
         uses: actions/upload-artifact@v4
