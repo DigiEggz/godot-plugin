@@ -43,14 +43,23 @@ jobs:
           cargo build --manifest-path src/Cargo.toml --release --target i686-pc-windows-msvc
           cargo build --manifest-path src/Cargo.toml --release --target aarch64-pc-windows-msvc
 
+      - name: Organize Windows Binaries
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/x86_32"
+          New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/arm64"
+          New-Item -ItemType Directory -Force -Path "addons/nodetunnel/bin/windows/x86_64"
+          
+          Copy-Item "src/target/i686-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/x86_32/"
+          Copy-Item "src/target/aarch64-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/arm64/"
+          Copy-Item "src/target/x86_64-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/x86_64/"
+          Copy-Item "src/target/x86_64-pc-windows-msvc/release/*.dll" -Destination "addons/nodetunnel/bin/windows/"
+
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nodetunnel-windows
-          path: |
-            src/target/x86_64-pc-windows-msvc/release/*.dll
-            src/target/i686-pc-windows-msvc/release/*.dll
-            src/target/aarch64-pc-windows-msvc/release/*.dll
+          path: addons/nodetunnel/bin/windows/
 
   build-macos:
     runs-on: macos-latest
