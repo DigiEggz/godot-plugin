@@ -126,6 +126,8 @@ jobs:
 
       - name: Build Android Shared Libraries
         working-directory: src
+        env:
+          RUSTFLAGS: "-C link-arg=-landroid -C link-arg=-log"
         run: |
           cargo ndk -t aarch64-linux-android -t x86_64-linux-android -o ../addons/nodetunnel/bin/android build --release
 
