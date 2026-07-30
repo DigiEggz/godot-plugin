@@ -162,9 +162,9 @@ impl NodeTunnelPeer {
                 let mut room_array = Array::new();
 
                 for room in rooms {
-                    let mut room_dict = Dictionary::new();
-                    room_dict.set("id", room.id.clone());
-                    room_dict.set("metadata", room.metadata.clone());
+                    let mut room_dict: Dictionary<Variant, Variant> = Dictionary::new();
+                    room_dict.set("id", room.id.clone().to_variant());
+                    room_dict.set("metadata", room.metadata.clone().to_variant());
 
                     room_array.push(&room_dict.to_variant());
                 }
